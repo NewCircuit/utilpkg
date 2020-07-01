@@ -8,6 +8,9 @@ import (
 	"github.com/go-yaml/yaml"
 )
 
+// GetConfig takes <path string> <output interface{}>
+// Reads configuration
+// Returns error
 func GetConfig(path string, output interface{}) error {
 	if _, err := os.Stat(path); err != nil {
 		return genConfig(path, output)
@@ -26,6 +29,9 @@ func GetConfig(path string, output interface{}) error {
 	return nil
 }
 
+// genConfig takes <path string> <reference interface{}>
+// Generates configuration
+// Returns error
 func genConfig(path string, reference interface{}) error {
 	serialized, err := yaml.Marshal(reference)
 

@@ -2,9 +2,10 @@ package utilpkg
 
 import (
 	"fmt"
-	. "github.com/Floor-Gang/utilpkg"
 	"strings"
 	"testing"
+
+	. "github.com/Floor-Gang/utilpkg"
 )
 
 type BotConfig struct {

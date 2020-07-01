@@ -1,4 +1,4 @@
-package packageutils
+package utilpkg
 
 // main shows an example of making an embed
 //  Using the embed utils in utils/easyEmbed.go
