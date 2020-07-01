@@ -5,6 +5,17 @@ import (
 	dg "github.com/bwmarrin/discordgo"
 )
 
+func HasRole(has []string, required []string) (bool, string) {
+	for _, hasRole := range has {
+		for _, reqRole := range required {
+			if reqRole == hasRole {
+				return false, ""
+			}
+		}
+	}
+	return false, ""
+}
+
 // Reply takes <s *Session> <msg *Message> <context string>
 // Sends message to channel
 // Returns replied message and error
