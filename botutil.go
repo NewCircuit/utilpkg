@@ -2,10 +2,11 @@ package utilpkg
 
 import (
 	"fmt"
-
-	. "github.com/bwmarrin/discordgo"
 )
 
+// Reply takes <s *Session> <msg *Message> <context string>
+// Sends message to channel
+// Returns replied message and error
 func Reply(s *Session, msg *Message, context string) (*Message, error) {
 	return s.ChannelMessageSend(
 		msg.ChannelID,
@@ -13,6 +14,9 @@ func Reply(s *Session, msg *Message, context string) (*Message, error) {
 	)
 }
 
+// Mention takes <s *Session> <userID string> <channelID string> <context string>
+// Mentions user in channel
+// Returns replied message and error
 func Mention(s *Session, userID string, channelID string, context string) (*Message, error) {
 	return s.ChannelMessageSend(
 		channelID,
@@ -20,15 +24,22 @@ func Mention(s *Session, userID string, channelID string, context string) (*Mess
 	)
 }
 
+// PromptOptions structure
 type PromptOptions struct {
 	prompt  string
 	expires int
 }
 
+// PromptUser takes <s *Session> <message *Message> <options PromptOptions>
+// Prompts user
+// Returns message and error
 func PromptUser(s *Session, message *Message, options PromptOptions) (*Message, error) {
 	return Prompt(s, message.Author.ID, message.ChannelID, options)
 }
 
+// Prompt takes <s *Session> <userID string> <channelID string> <options PromptOptions>
+// Prompts user for response
+// Returns message and error
 func Prompt(s *Session, userID string, channelID string, options PromptOptions) (*Message, error) {
 	resChannel := make(chan *Message)
 	var response *Message
@@ -48,6 +59,8 @@ func Prompt(s *Session, userID string, channelID string, options PromptOptions) 
 	return response, nil
 }
 
+// handlePrompt takes <s *Session> <msg *MessageCreate> <userID string> <channelID string> <output chan *message>
+// Handles prompt by adding handler
 func handlePrompt(s *Session, msg *MessageCreate, userID string, channelID string, output chan *Message) {
 	if msg.ChannelID == channelID && msg.Author.ID == userID {
 		output <- msg.Message
