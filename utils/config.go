@@ -1,10 +1,11 @@
-package utility_package
+package utilitypackage
 
 import (
 	"errors"
-	"github.com/go-yaml/yaml"
 	"io/ioutil"
 	"os"
+
+	"github.com/go-yaml/yaml"
 )
 
 func GetConfig(path string, output interface{}) error {

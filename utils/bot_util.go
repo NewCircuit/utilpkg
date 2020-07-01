@@ -1,7 +1,8 @@
-package utility_package
+package utilitypackage
 
 import (
 	"fmt"
+
 	. "github.com/bwmarrin/discordgo"
 )
 

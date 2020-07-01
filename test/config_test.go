@@ -1,10 +1,11 @@
-package main
+package utilitypackage
 
 import (
 	"fmt"
-	. "github.com/Floor-Gang/utility_package"
 	"strings"
 	"testing"
+
+	. "github.com/Floor-Gang/utility_package"
 )
 
 type BotConfig struct {
