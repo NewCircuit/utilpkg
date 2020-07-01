@@ -1,6 +1,12 @@
-package main
+package packageutils
 
 import (
+	"bytes"
+	"encoding/json"
+	"net/http"
+	"strconv"
+	"strings"
+
 	dg "github.com/bwmarrin/discordgo"
 )
 
@@ -29,105 +35,102 @@ func NewEmbed() *Embed {
 	return &Embed{&dg.MessageEmbed{}}
 }
 
-// SetTitle takes <title string>
-// Returns an embed with title set <title>
-func (e *Embed) SetTitle(title string) *Embed {
-	if len(title) > EmbedLimitTitle {
-		title = title[:EmbedLimitTitle]
+// SetTitle takes <Title string>
+// Sets embed with title set <Title>
+func (e *Embed) SetTitle(Title string) {
+	if len(Title) > EmbedLimitTitle {
+		Title = Title[:EmbedLimitTitle]
 	}
-	e.Title = title
-	return e
+	e.Title = Title
 }
 
-// SetDescription takes <description string>
-// Returns an embed with description set <description>
-func (e *Embed) SetDescription(description string) *Embed {
-	if len(description) > EmbedLimitDescription {
-		description = description[:EmbedLimitDescription]
+// SetDescription takes <Description string>
+// Sets embed with description set <Description>
+func (e *Embed) SetDescription(Description string) {
+	if len(Description) > EmbedLimitDescription {
+		Description = Description[:EmbedLimitDescription]
 	}
-	e.Description = description
-	return e
+	e.Description = Description
 }
 
-// AddField takes <name string> <value string>
-// Returns an embed with embed field set <name> <value>
-func (e *Embed) AddField(name string, value string) *Embed {
-	if len(value) > EmbedLimitFieldValue {
-		value = value[:EmbedLimitFieldValue]
+// AddField takes <Name string> <Value string> <Inline bool>
+// Returns an embed with embed field set <Name> <Value> <Inline>
+func (e *Embed) AddField(Name string, Value string, Inline bool) {
+	if len(Value) > EmbedLimitFieldValue {
+		Value = Value[:EmbedLimitFieldValue]
 	}
 
-	if len(name) > EmbedLimitFieldName {
-		name = name[:EmbedLimitFieldName]
+	if len(Name) > EmbedLimitFieldName {
+		Name = Name[:EmbedLimitFieldName]
 	}
 
-	e.Fields = append(e.Fields, &dg.MessageEmbedField{
-		Name:  name,
-		Value: value,
-	})
-	return e
+	EmbedField := dg.MessageEmbedField{
+		Name:   Name,
+		Value:  Value,
+		Inline: Inline,
+	}
+
+	e.Fields = append(e.Fields, &EmbedField)
 }
 
-// SetFooter takes <iconurl string> <text string> <proxyurl string>
-// Returns embed with embed footer set <iconurl> <text> <proxyurl>
-func (e *Embed) SetFooter(iconURL string, text string, proxyURL string) *Embed {
-	if len(text) > EmbedLimitFooter {
-		text = text[:EmbedLimitFooter]
+// SetFooter takes <IconURL string> <Text string>
+// Sets embed with embed footer set <Iconurl> <Text>
+func (e *Embed) SetFooter(IconURL string, Text string) {
+	if len(Text) > EmbedLimitFooter {
+		Text = Text[:EmbedLimitFooter]
 	}
 
 	e.Footer = &dg.MessageEmbedFooter{
-		IconURL:      iconURL,
-		Text:         text,
-		ProxyIconURL: proxyURL,
+		IconURL: IconURL,
+		Text:    Text,
 	}
-	return e
 }
 
-// SetImage takes <url string> <proxyurl string>
-// Returns embed with embed image set <url> <proxyurl>
-func (e *Embed) SetImage(URL string, proxyURL string) *Embed {
+// SetImage takes <URL string>
+// Sets embed image <URL>
+func (e *Embed) SetImage(URL string) {
 	e.Image = &dg.MessageEmbedImage{
-		URL:      URL,
-		ProxyURL: proxyURL,
+		URL: URL,
 	}
-	return e
 }
 
-// SetThumbnail takes <url string> <proxyurl string> <height int> <width int>
-// Returns embed with embed thumbnail set <url> <proxyurl> <height> <width>
-func (e *Embed) SetThumbnail(URL string, proxyURL string, height int, width int) *Embed {
+// SetThumbnail takes <URL string>
+// Sets embed thumbnail to <URL>
+func (e *Embed) SetThumbnail(URL string) {
 	e.Thumbnail = &dg.MessageEmbedThumbnail{
-		URL:      URL,
-		ProxyURL: proxyURL,
-		Height:   height,
-		Width:    width,
+		URL: URL,
 	}
-	return e
 }
 
-// SetAuthor takes <name string> <iconurl string> <url string> <proxyurl string>
-// Returns embed with author set <name> <iconurl> <url> <proxyurl>
-func (e *Embed) SetAuthor(name string, iconURL string, URL string, proxyURL string) *Embed {
+// SetAuthor takes <Name string> <IconURL string> <URL string>
+// Returns embed with author set <Name> <IconURL> <URL>
+func (e *Embed) SetAuthor(Name string, IconURL string, URL string) {
 	e.Author = &dg.MessageEmbedAuthor{
-		Name:         name,
-		IconURL:      iconURL,
-		URL:          URL,
-		ProxyIconURL: proxyURL,
+		Name:    Name,
+		IconURL: IconURL,
+		URL:     URL,
 	}
-	return e
 }
 
-// SetURL takes <url string>
-// Returns embed with url set <url>
-func (e *Embed) SetURL(URL string) *Embed {
+// SetURL takes <URL string>
+// Sets embed url <URL>
+func (e *Embed) SetURL(URL string) {
 	e.URL = URL
-	return e
 }
 
-// SetColor takes <color int>
-// Returns embed with color set <color>
-func (e *Embed) SetColor(color int) *Embed {
-	e.Color = color
-	return e
+// SetColor takes <Color string>
+// Sets color of embed to <Color>
+// Returns error
+func (e *Embed) SetColor(Color string) error {
+	Color = strings.Replace(Color, "0x", "", -1)
+	Color = strings.Replace(Color, "0X", "", -1)
+	Color = strings.Replace(Color, "#", "", -1)
+	ColorInt, err := strconv.Atoi(Color)
+	if err != nil {
+		return err
+	}
+	e.Color = ColorInt
+	return nil
 }
 
 // InlineAllFields sets all fields in the embed to be inline
@@ -151,4 +154,18 @@ func (e *Embed) TruncateFields() *Embed {
 		e.Fields = e.Fields[:EmbedLimitField]
 	}
 	return e
+}
+
+// SendToWebhook takes <Webhook string>
+// Sends embed to webhook
+// Returns error if invalid embed or error posting to webhook
+func (e *Embed) SendToWebhook(Webhook string) error {
+	embed, err := json.Marshal(e)
+	if err != nil {
+		return err
+	}
+	if _, err = http.Post(Webhook, "application/json", bytes.NewBuffer(embed)); err != nil {
+		return err
+	}
+	return nil
 }
