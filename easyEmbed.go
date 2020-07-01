@@ -1,4 +1,4 @@
-package packageutils
+package utilpkg
 
 import (
 	"bytes"
