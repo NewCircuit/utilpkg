@@ -87,7 +87,7 @@ func handlePrompt(s *dg.Session, msg *dg.MessageCreate, userID string, channelID
 // filterTag takes <tag string>
 // filterTag filters out the random characters
 // Returns id
-func filterTag(tag string) string {
+func FilterTag(tag string) string {
 	typeTag := tag[1:2]
 	m := regexp.MustCompile("")
 
