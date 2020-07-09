@@ -1,4 +1,5 @@
-package utilpkg
+// This package evolves around discordgo library
+package botutil
 
 import (
 	"fmt"
@@ -6,6 +7,7 @@ import (
 	"regexp"
 )
 
+// Check if a user has a role
 func HasRole(has []string, required []string) (bool, string) {
 	for _, hasRole := range has {
 		for _, reqRole := range required {

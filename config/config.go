@@ -1,4 +1,4 @@
-package utilpkg
+package config
 
 import (
 	"errors"
@@ -13,7 +13,7 @@ import (
 // Returns error
 func GetConfig(path string, output interface{}) error {
 	if _, err := os.Stat(path); err != nil {
-		return Save(path, output)
+		return genConfig(path, output)
 	}
 
 	// Config file exists, so we're reading it.
@@ -29,18 +29,18 @@ func GetConfig(path string, output interface{}) error {
 	return nil
 }
 
-func Save(path string, output interface{}) {
+func Save(path string, output interface{}) error {
 	serialized, err := yaml.Marshal(output)
 
 	if err != nil {
 		return err
 	}
 
-	err = ioutil.WriteFile(path, output, 0660)
-
-	if err != nil {
+	if err = ioutil.WriteFile(path, serialized, 0660); err != nil {
 		return err
 	}
+
+	return nil
 }
 
 // genConfig takes <path string> <reference interface{}>

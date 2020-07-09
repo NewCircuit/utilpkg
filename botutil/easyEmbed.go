@@ -1,4 +1,4 @@
-package utilpkg
+package botutil
 
 import (
 	"bytes"
