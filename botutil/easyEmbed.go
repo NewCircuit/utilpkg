@@ -160,12 +160,20 @@ func (e *Embed) TruncateFields() *Embed {
 // Sends embed to webhook
 // Returns error if invalid embed or error posting to webhook
 func (e *Embed) SendToWebhook(Webhook string) error {
-	embed, err := json.Marshal(e)
+	embedArray := append(make([]*dg.MessageEmbed, 0), e.MessageEmbed)
+	params := dg.WebhookParams{
+		Embeds: embedArray,
+	}
+
+	embedJson, err := json.Marshal(params)
 	if err != nil {
 		return err
 	}
-	if _, err = http.Post(Webhook, "application/json", bytes.NewBuffer(embed)); err != nil {
+
+	_, err = http.Post(Webhook, "application/json", bytes.NewBuffer(embedJson))
+	if err != nil {
 		return err
 	}
+
 	return nil
 }
