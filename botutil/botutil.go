@@ -12,7 +12,7 @@ func HasRole(has []string, required []string) (bool, string) {
 	for _, hasRole := range has {
 		for _, reqRole := range required {
 			if reqRole == hasRole {
-				return false, ""
+				return true, ""
 			}
 		}
 	}
