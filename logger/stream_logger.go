@@ -29,14 +29,14 @@ func NewConsoleLoggerBasic(section string) Logger {
 func NewConsoleLogger(section string, out *io.Writer, err *io.Writer) Logger {
 	logger := StreamLogger{
 		section: section,
-		out: out,
-		err: err,
+		out:     out,
+		err:     err,
 	}
 	return logger.Logger
 }
 
 func (logger *StreamLogger) CreateSubLogger(section string) Logger {
-	return NewConsoleLogger(logger.section + ":" + section, logger.out, logger.err)
+	return NewConsoleLogger(logger.section+":"+section, logger.out, logger.err)
 }
 
 func (logger *StreamLogger) Debug(message string) {

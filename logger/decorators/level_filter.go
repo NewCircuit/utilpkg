@@ -5,23 +5,23 @@ import "github.com/Floor-Gang/utilpkg/logger"
 type LogLevel int
 
 const (
-	Debug = -1
+	Debug   = -1
 	Message = 0
 	Warning = 1
-	Error = 2
+	Error   = 2
 )
 
 type LevelBasedLogFilter struct {
 	logger.Logger
 
 	verbosity LogLevel
-	child logger.Logger
+	child     logger.Logger
 }
 
 func ApplyLevelBasedLogFilter(verbosity LogLevel, logger logger.Logger) logger.Logger {
 	decoratedLogger := LevelBasedLogFilter{
 		verbosity: verbosity,
-		child: logger,
+		child:     logger,
 	}
 	return decoratedLogger.Logger
 }
