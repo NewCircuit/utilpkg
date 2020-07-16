@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	. "github.com/Floor-Gang/utilpkg"
+	"github.com/Floor-Gang/utilpkg/config"
 )
 
 type BotConfig struct {
@@ -23,7 +23,7 @@ func TestConfig(t *testing.T) {
 		Prefix: "",
 	}
 
-	err := GetConfig("./config.yml", &reference)
+	err := config.GetConfig("./config.yml", &reference)
 
 	if err != nil {
 		if !strings.Contains(err.Error(), "default configuration") {
@@ -34,13 +34,13 @@ func TestConfig(t *testing.T) {
 		return
 	}
 
-	err = GetConfig("./config.yml", &generic)
+	err = config.GetConfig("./config.yml", &generic)
 
 	if err != nil {
 		t.Error("Failed to read from configuration file.")
 		return
 	}
-
+	
 	if generic.Token != reference.Token {
 		fmt.Printf("\"%s\" != \"%s\"\n", generic.Token, reference.Token)
 		t.Error("Token attribute does not match reference.")
