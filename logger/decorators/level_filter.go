@@ -5,6 +5,7 @@ import "github.com/Floor-Gang/utilpkg/logger"
 type LogLevel int
 
 const (
+	Debug = -1
 	Message = 0
 	Warning = 1
 	Error = 2
@@ -32,18 +33,24 @@ func (logger *LevelBasedLogFilter) CreateSubLogger(section string) logger.Logger
 
 func (logger *LevelBasedLogFilter) Warn(message string) {
 	if logger.verbosity <= Warning {
-		logger.Warn(message)
+		logger.child.Warn(message)
 	}
 }
 
-func (logger *LevelBasedLogFilter) Error(message string) {
+func (logger *LevelBasedLogFilter) Error(error error) {
 	if logger.verbosity <= Error {
-		logger.Warn(message)
+		logger.child.Error(error)
 	}
 }
 
 func (logger *LevelBasedLogFilter) Message(message string) {
 	if logger.verbosity <= Message {
-		logger.Warn(message)
+		logger.child.Message(message)
+	}
+}
+
+func (logger *LevelBasedLogFilter) Debug(message string) {
+	if logger.verbosity <= Debug {
+		logger.child.Debug(message)
 	}
 }

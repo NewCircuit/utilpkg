@@ -27,6 +27,7 @@ func NewDiscordLoggerFromWebhook(section string, webhookURL string) DiscordLogge
 		useWebhook: true,
 	}
 }
+
 func NewDiscordLoggerFromWebhookWithEmbed(section string, webhookURL string, baseEmbed func() *botutil.Embed) DiscordLogger {
 	return DiscordLogger{
 		baseEmbedBuilder: baseEmbed,
@@ -47,16 +48,20 @@ func (logger *DiscordLogger) CreateSubLogger(section string) DiscordLogger {
 	return DiscordLogger{}
 }
 
-func (logger *DiscordLogger) Warn(message string) {
-	_ = logger.sendWebhook(message, "warning")
+func (logger *DiscordLogger) Debug(message string) {
+	_ = logger.sendWebhook(message, "debug")
 }
 
-func (logger *DiscordLogger) Error(message string) {
-	_ = logger.sendWebhook(message, "error")
+func (logger *DiscordLogger) Error(error error) {
+	_ = logger.sendWebhook(error.Error(), "error")
 }
 
 func (logger *DiscordLogger) Message(message string) {
 	_ = logger.sendWebhook(message, "message")
+}
+
+func (logger *DiscordLogger) Warn(message string) {
+	_ = logger.sendWebhook(message, "warning")
 }
 
 func (logger *DiscordLogger) sendWebhook(message string, level string) error {
@@ -76,23 +81,13 @@ func (logger *DiscordLogger) sendWebhook(message string, level string) error {
 	return embed.SendToWebhook(logger.webhookURL)
 }
 
+// TODO(velddev): Generalize this to reuse for all loggers?
 func determineColorFromLevel(level string) string {
 	switch level {
 		case "error": return "15086631"
 		case "warning": return "15459356"
 		case "message": return "1875179"
+		case "debug": return "8818851"
 		default: return "16777215"
 	}
-}
-
-func mergeStrings(a string, b string) string {
-	if a == "" {
-		return b
-	}
-
-	if b == "" {
-		return a
-	}
-
-	return a + " (" + b + ")"
 }
