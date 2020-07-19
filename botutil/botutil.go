@@ -110,6 +110,9 @@ func FilterTag(tag string) string {
 			m = regexp.MustCompile("!(.*?)>")
 		}
 		break
+	default:
+		return tag
+		break
 	}
 
 	tag = m.FindString(tag)
