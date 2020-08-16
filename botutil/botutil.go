@@ -136,14 +136,15 @@ func FilterTag(tag string) string {
 
 // filterTag takes <dg *Session> <guildID string> <userID string> <mute bool>
 // filterTag filters out the random characters
-// Returns id
+// Returns error
 func ServerMute(session *dg.Session, guildID string, userID string, mute bool) (err error) {
 	data := struct {
 		Mute bool `json:"mute"`
 	}{mute}
 
 	// Does a manual API call because discordgo doesn't have this yet.
-	_, err = session.RequestWithBucketID("PATCH", dg.EndpointGuildMember(guildID, userID), data, dg.EndpointGuildMember(guildID, ""))
+	_, err = session.RequestWithBucketID("PATCH", dg.EndpointGuildMember(guildID, userID), data,
+		dg.EndpointGuildMember(guildID, ""))
 	if err != nil {
 		return err
 	}
