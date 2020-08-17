@@ -2,15 +2,12 @@ package config
 
 import (
 	"errors"
+	"github.com/go-yaml/yaml"
 	"io/ioutil"
 	"os"
-
-	"github.com/go-yaml/yaml"
 )
 
-// GetConfig takes <path string> <output interface{}>
-// Reads configuration
-// Returns error
+// GetConfig will create a YML config if it doesn't exist already.
 func GetConfig(path string, output interface{}) error {
 	if _, err := os.Stat(path); err != nil {
 		return genConfig(path, output)
@@ -29,6 +26,8 @@ func GetConfig(path string, output interface{}) error {
 	return nil
 }
 
+// Save intakes an interface (which should have YAML meta tags) and saves it to
+// the given path.
 func Save(path string, output interface{}) error {
 	serialized, err := yaml.Marshal(output)
 
