@@ -1,4 +1,3 @@
-// This package evolves around discordgo library
 package botutil
 
 import (
@@ -7,16 +6,16 @@ import (
 	"regexp"
 )
 
-// Check if a user has a role
-func HasRole(has []string, required []string) (bool, string) {
+// HasRole Check if a user has a role
+func HasRole(has []string, required []string) bool {
 	for _, hasRole := range has {
 		for _, reqRole := range required {
 			if reqRole == hasRole {
-				return true, ""
+				return true
 			}
 		}
 	}
-	return false, ""
+	return false
 }
 
 // Reply takes <s *Session> <msg *Message> <context string>
@@ -39,54 +38,7 @@ func Mention(s *dg.Session, userID string, channelID string, context string) (*d
 	)
 }
 
-// PromptOptions structure
-type PromptOptions struct {
-	prompt  string
-	expires int
-}
-
-// PromptUser takes <s *Session> <message *Message> <options PromptOptions>
-// Prompts user
-// Returns message and error
-func PromptUser(s *dg.Session, message *dg.Message, options PromptOptions) (*dg.Message, error) {
-	return Prompt(s, message.Author.ID, message.ChannelID, options)
-}
-
-// Prompt takes <s *Session> <userID string> <channelID string> <options PromptOptions>
-// Prompts user for response
-// Returns message and error
-func Prompt(s *dg.Session, userID string, channelID string, options PromptOptions) (*dg.Message, error) {
-	resChannel := make(chan *dg.Message)
-	var response *dg.Message
-
-	_, err := Mention(s, userID, channelID, options.prompt)
-
-	if err != nil {
-		return nil, err
-	}
-
-	s.AddHandlerOnce(func(s *dg.Session, msg *dg.MessageCreate) {
-		go handlePrompt(s, msg, userID, channelID, resChannel)
-	})
-
-	response = <-resChannel
-
-	return response, nil
-}
-
-// handlePrompt takes <s *Session> <msg *MessageCreate> <userID string> <channelID string> <output chan *message>
-// Handles prompt by adding handler
-func handlePrompt(s *dg.Session, msg *dg.MessageCreate, userID string, channelID string, output chan *dg.Message) {
-	if msg.ChannelID == channelID && msg.Author.ID == userID {
-		output <- msg.Message
-	} else {
-		s.AddHandlerOnce(func(s *dg.Session, msg *dg.MessageCreate) {
-			handlePrompt(s, msg, userID, channelID, output)
-		})
-	}
-}
-
-// filterTag takes <tag string>
+// FilterTag takes <tag string>
 // filterTag filters out the random characters
 // Returns id
 func FilterTag(tag string) string {
