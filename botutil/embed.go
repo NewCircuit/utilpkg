@@ -3,11 +3,10 @@ package botutil
 import (
 	"bytes"
 	"encoding/json"
+	dg "github.com/bwmarrin/discordgo"
 	"net/http"
 	"strconv"
 	"strings"
-
-	dg "github.com/bwmarrin/discordgo"
 )
 
 // Everything here is mainly stolen from https://gist.github.com/Necroforger/8b0b70b1a69fa7828b8ad6387ebb3835
@@ -165,12 +164,12 @@ func (e *Embed) SendToWebhook(Webhook string) error {
 		Embeds: embedArray,
 	}
 
-	embedJson, err := json.Marshal(params)
+	embedJSON, err := json.Marshal(params)
 	if err != nil {
 		return err
 	}
 
-	_, err = http.Post(Webhook, "application/json", bytes.NewBuffer(embedJson))
+	_, err = http.Post(Webhook, "application/json", bytes.NewBuffer(embedJSON))
 	if err != nil {
 		return err
 	}
