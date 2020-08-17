@@ -18,9 +18,8 @@ func HasRole(has []string, required []string) bool {
 	return false
 }
 
-// Reply takes <s *Session> <msg *Message> <context string>
-// Sends message to channel
-// Returns replied message and error
+// Reply sends a response in the same channel to the same user who sent the
+// message. The sent message and possible error is returned.
 func Reply(s *dg.Session, msg *dg.Message, context string) (*dg.Message, error) {
 	return s.ChannelMessageSend(
 		msg.ChannelID,
@@ -28,9 +27,7 @@ func Reply(s *dg.Session, msg *dg.Message, context string) (*dg.Message, error) 
 	)
 }
 
-// Mention takes <s *Session> <userID string> <channelID string> <context string>
-// Mentions user in channel
-// Returns replied message and error
+// Mention mentions a given user in a channel.
 func Mention(s *dg.Session, userID string, channelID string, context string) (*dg.Message, error) {
 	return s.ChannelMessageSend(
 		channelID,
@@ -38,9 +35,8 @@ func Mention(s *dg.Session, userID string, channelID string, context string) (*d
 	)
 }
 
-// FilterTag takes <tag string>
-// filterTag filters out the random characters
-// Returns id
+// FilterTag takes intakes a ID formatted by the Discord client
+// ie <#ID>, <:ID>, or <#ID> and returns ID.
 func FilterTag(tag string) string {
 	typeTag := tag[1:2]
 	m := regexp.MustCompile("")
@@ -64,7 +60,6 @@ func FilterTag(tag string) string {
 		break
 	default:
 		return tag
-		break
 	}
 
 	tag = m.FindString(tag)
