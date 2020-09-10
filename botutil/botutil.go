@@ -38,6 +38,9 @@ func Mention(s *dg.Session, userID string, channelID string, context string) (*d
 // FilterTag takes intakes a ID formatted by the Discord client
 // ie <#ID>, <:ID>, or <#ID> and returns ID.
 func FilterTag(tag string) string {
+	if len(tag) < 2 {
+		return tag;
+	}
 	typeTag := tag[1:2]
 	m := regexp.MustCompile("")
 
