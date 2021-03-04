@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Floor-Gang/utilpkg/config"
+	"github.com/NewCircuit/utilpkg/config"
 )
 
 type BotConfig struct {

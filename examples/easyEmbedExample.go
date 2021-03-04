@@ -1,7 +1,7 @@
 package utilpkg
 
 import (
-	"github.com/Floor-Gang/utilpkg/botutil"
+	"github.com/NewCircuit/utilpkg/botutil"
 )
 
 // main shows an example of making an embed

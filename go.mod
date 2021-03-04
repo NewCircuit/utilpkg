@@ -1,4 +1,4 @@
-module github.com/Floor-Gang/utilpkg
+module github.com/NewCircuit/utilpkg
 
 go 1.14
 

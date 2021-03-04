@@ -1,6 +1,6 @@
 package decorators
 
-import "github.com/Floor-Gang/utilpkg/logger"
+import "github.com/NewCircuit/utilpkg/logger"
 
 type LogLevel int
 

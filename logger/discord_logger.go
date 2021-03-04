@@ -2,7 +2,7 @@ package logger
 
 import (
 	"errors"
-	"github.com/Floor-Gang/utilpkg/botutil"
+	"github.com/NewCircuit/utilpkg/botutil"
 	"log"
 )
 

@@ -1,7 +1,7 @@
 package utilpkg
 
 import (
-	"github.com/Floor-Gang/utilpkg/botutil"
+	"github.com/NewCircuit/utilpkg/botutil"
 	dg "github.com/bwmarrin/discordgo"
 	"log"
 	"time"
